@@ -1,0 +1,76 @@
+/* Fix styles for progress bars and file queue items */
+.queue-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 14px !important;
+    border-radius: 8px !important;
+    margin-bottom: 12px !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    position: relative !important;
+}
+
+.queue-item-info {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+}
+
+.queue-item-name {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin-bottom: 4px !important;
+    color: white !important;
+}
+
+.queue-item-size {
+    font-size: 12px !important;
+    color: #b0b0b0 !important;
+    margin-bottom: 8px !important;
+}
+
+.file-progress-container {
+    width: 100% !important;
+    height: 4px !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+}
+
+.file-progress-bar {
+    height: 100% !important;
+    width: 0% !important;
+    background: linear-gradient(45deg, #7c4dff, #b388ff) !important;
+    transition: width 0.2s ease-out !important;
+}
+
+.queue-item-status {
+    margin: 0 10px !important;
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
+    background-color: rgba(124, 77, 255, 0.15) !important;
+    color: #b388ff !important;
+}
+
+.queue-item-status.pending {
+    background-color: rgba(255, 171, 64, 0.15) !important;
+    color: #ffab40 !important;
+}
+
+.queue-item-status.completed {
+    background-color: rgba(105, 240, 174, 0.15) !important;
+    color: #69f0ae !important;
+}
+
+.queue-item-status.failed {
+    background-color: rgba(255, 82, 82, 0.15) !important;
+    color: #ff5252 !important;
+}
+
+.queue-item-actions {
+    display: flex !important;
+    align-items: center !important;
+}

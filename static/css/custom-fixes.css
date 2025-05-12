@@ -1,0 +1,42 @@
+/* Fix for NaN% and file queue layout issues */
+.queue-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+}
+
+.queue-item-info {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+    text-align: left !important;
+    margin-right: 12px !important;
+}
+
+.file-progress-container {
+    width: 100% !important;
+    height: 4px !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 2px !important;
+    margin-top: 8px !important;
+    overflow: hidden !important;
+}
+
+.file-progress-bar {
+    height: 100% !important;
+    width: 0% !important;
+    background: linear-gradient(45deg, #7c4dff, #b388ff) !important;
+    transition: width 0.3s ease !important;
+}
+
+.queue-item-status {
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
+    font-size: 0.8rem !important;
+    background-color: rgba(124, 77, 255, 0.15) !important;
+    color: #b388ff !important;
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PeerSmash - Secure P2P File Transfer</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <!-- <link rel="stylesheet" href="/static/css/custom-fixes.css">
+    <link rel="stylesheet" href="/static/css/progress-bar-fix.css"> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- <link
+      rel="shortcut icon"
+      href="/static/images/favicon.ico"
+      type="image/x-icon"
+    /> -->
+
+    <!-- Metadata -->
+    <meta
+      name="description"
+      content="PeerSmash - Fast and secure peer-to-peer file transfer with no size limits"
+    />
+    <meta name="author" content="Tej Vishwakarma" />
+    <meta property="og:title" content="PeerSmash" />
+    <meta
+      property="og:description"
+      content="Fast, secure peer-to-peer file transfers with no size limits"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://peersmash.com" />
+    <meta
+      property="og:image"
+      content="https://peersmash.com/static/images/peersmash-social.png"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="logo">
+          <i class="fa-solid fa-shield-halved"></i> PeerSmash
+        </div>
+        <div class="auth-buttons">
+          <a href="/login" class="btn-login"
+            ><i class="fa-solid fa-right-to-bracket"></i> Login</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div id="sessionControls" class="view">
+        <div class="container hero">
+          <h1>Secure File Transfer</h1>
+          <p>Transfer files securely with end-to-end encryption</p>
+          <button id="startSessionBtn" class="btn-primary">
+            <i class="fa-solid fa-wifi"></i> Start Secure Session
+          </button>
+        </div>
+
+        <div class="features">
+          <div class="feature-item">
+            <i class="fa-solid fa-lock"></i>
+            <h3>End-to-End Encryption</h3>
+            <p>Your files are encrypted before leaving your device</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-server"></i>
+            <h3>Peer-to-Peer Transfer</h3>
+            <p>
+              Files are sent directly to the recipient without server storage
+            </p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-clock"></i>
+            <h3>Ephemeral Sessions</h3>
+            <p>Sessions and encryption keys are destroyed after transfer</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="sessionInfo" class="view hidden">
+        <div class="container">
+          <h1>Share This Link</h1>
+          <p class="sub-text">
+            Send this link to the person you want to send files to:
+          </p>
+
+          <div class="link-container">
+            <input type="text" id="sessionLink" readonly />
+            <button id="copyLinkBtn" class="btn-icon">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+          </div>
+          <p id="copySuccess" class="copy-success">Link copied!</p>
+
+          <div class="divider">
+            <span>OR</span>
+          </div>
+
+          <h3>Scan QR Code</h3>
+          <div id="qrCode" class="qr-container"></div>
+
+          <div class="action-buttons">
+            <button id="disconnectBtn" class="btn-primary">
+              <i class="fa-solid fa-times"></i> Disconnect
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="joinSession" class="view hidden">
+        <div class="container">
+          <h1>Joining Secure Session</h1>
+          <div class="loading-animation">
+            <div class="spinner"></div>
+          </div>
+          <p>Establishing secure connection...</p>
+
+          <div class="action-buttons">
+            <button id="cancelJoinBtn" class="btn-primary">
+              <i class="fa-solid fa-ban"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="fileTransfer" class="view hidden">
+        <div class="container">
+          <h1>Secure File Transfer</h1>
+          <p id="connectionStatus">Waiting for peer...</p>
+
+          <!-- Add disconnect button in file transfer view -->
+          <button id="transferDisconnectBtn" class="btn-primary disconnect-btn">
+            <i class="fa-solid fa-times"></i> Disconnect
+          </button>
+
+          <!-- Updated drop area messaging for multiple files -->
+          <div id="dropArea" class="drop-area">
+            <div class="drop-message">
+              <i class="fa-solid fa-cloud-arrow-up fa-2x"></i>
+              <h3>Drag and drop files here</h3>
+              <p>or click to select multiple files</p>
+            </div>
+            
+            <!-- Update the file input to allow multiple files -->
+            <input type="file" id="fileInput" class="hidden" multiple />
+          </div>
+
+          <!-- Waiting indicator for receiver -->
+          <div id="waitingIndicator" class="waiting-indicator hidden">
+            <h3>Waiting for Files</h3>
+            <p>The sender will send files to you shortly.</p>
+            <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+          </div>
+
+          <!-- <div class="tier-info">
+              <span class="tier-badge free">Free Tier</span>
+              <span class="tier-limit">File limit: 2GB per file</span>
+              <a href="#upgrade" class="upgrade-link">Upgrade for unlimited sizes</a>
+            </div> -->
+
+          <!-- Add file queue container - shown immediately for receiver -->
+          <div id="fileQueue" class="file-queue hidden">
+            <h3>File Queue <span id="queueCount"></span></h3>
+            <div id="queueList"></div>
+            <div class="queue-progress-container">
+              <p>Overall Progress:</p>
+              <div class="progress-container">
+                <div id="totalProgressBar" class="progress-bar"></div>
+              </div>
+              <p id="totalProgressText">0%</p>
+            </div>
+
+            <!-- Move encryption status here -->
+            <div id="encryptionStatus" class="encryption-status hidden">
+              <i class="fa-solid fa-lock"></i> Encryption enabled
+            </div>
+          </div>
+
+          <!-- This div is kept for backward compatibility but will be hidden -->
+          <div id="transferProgress" class="hidden"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        &copy; <span id="currentYear"></span> PeerSmash. All rights reserved.
+        Made with
+        <i class="fa-solid fa-heart"></i>
+      </p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("currentYear").textContent =
+          new Date().getFullYear();
+      });
+    </script>
+
+    <script src="/static/js/crypto.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/transfer-enhancements.js"></script>
+    <script src="/static/js/quota-tracker.js"></script>
+    <script src="/static/js/notifications.js"></script>
+  </body>
+</html>
