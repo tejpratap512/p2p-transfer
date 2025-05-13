@@ -3,9 +3,28 @@ import uuid
 from typing import Dict, Set
 import json
 import time
+import logging
 
-# Create Socket.IO server
-sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger("socketio")
+logger.setLevel(logging.DEBUG)
+
+# Create Socket.IO server with enhanced configuration
+print("Initializing Socket.IO server...")
+sio = socketio.AsyncServer(
+    async_mode='asgi',
+    cors_allowed_origins=[
+        'https://streamsnatcher.com',
+        'https://www.streamsnatcher.com',
+        'http://streamsnatcher.com',
+        'http://www.streamsnatcher.com',
+        '*'  # Temporarily allow all origins for debugging
+    ],
+    logger=True,
+    engineio_logger=True
+)
+print("Socket.IO server initialized")
 
 # Track active sessions
 sessions: Dict[str, Dict] = {}
@@ -16,6 +35,7 @@ users: Dict[str, Set[str]] = {}  # email -> set of sids
 async def connect(sid, environ, auth=None):
     """Handle new connection"""
     print(f"Client connected: {sid}")
+    logger.info(f"Socket.IO: Client connected with sid {sid}")
     # Store authentication info if provided
     if auth and 'email' in auth:
         if auth['email'] not in users:
@@ -26,6 +46,7 @@ async def connect(sid, environ, auth=None):
 async def disconnect(sid):
     """Handle disconnection"""
     print(f"Client disconnected: {sid}")
+    logger.info(f"Socket.IO: Client disconnected: {sid}")
     
     # Remove user from users list
     for email, sids in list(users.items()):

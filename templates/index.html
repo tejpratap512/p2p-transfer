@@ -3,36 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PeerSmash - Secure P2P File Transfer</title>
+    <title>StreamSnatcher - Secure P2P File Transfer</title>
     <link rel="stylesheet" href="/static/css/styles.css" />
-    <!-- <link rel="stylesheet" href="/static/css/custom-fixes.css">
-    <link rel="stylesheet" href="/static/css/progress-bar-fix.css"> -->
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <!-- <link
+    <link
       rel="shortcut icon"
-      href="/static/images/favicon.ico"
+      href="/static/assets/favicon.png"
       type="image/x-icon"
-    /> -->
+    />
 
     <!-- Metadata -->
     <meta
       name="description"
-      content="PeerSmash - Fast and secure peer-to-peer file transfer with no size limits"
+      content="StreamSnatcher - Fast and secure peer-to-peer file transfer with no size limits"
     />
     <meta name="author" content="Tej Vishwakarma" />
-    <meta property="og:title" content="PeerSmash" />
+    <meta property="og:title" content="StreamSnatcher" />
     <meta
       property="og:description"
       content="Fast, secure peer-to-peer file transfers with no size limits"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://peersmash.com" />
+    <meta property="og:url" content="https://StreamSnatcher.com" />
     <meta
       property="og:image"
-      content="https://peersmash.com/static/images/peersmash-social.png"
+      content="https://StreamSnatcher.com/static/images/StreamSnatcher-social.png"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -41,12 +40,11 @@
     <header>
       <div class="header-content">
         <div class="logo">
-          <i class="fa-solid fa-shield-halved"></i> PeerSmash
+          <img src="/static/assets/main-logo.png" alt="main-logo" height="80px">
         </div>
         <div class="auth-buttons">
-          <a href="/login" class="btn-login"
-            ><i class="fa-solid fa-right-to-bracket"></i> Login</a
-          >
+          <a href="/login" class="btn-login">
+            <i class="fa-solid fa-right-to-bracket"></i> Login</a>
         </div>
       </div>
     </header>
@@ -189,7 +187,7 @@
 
     <footer>
       <p>
-        &copy; <span id="currentYear"></span> PeerSmash. All rights reserved.
+        &copy; <span id="currentYear"></span> StreamSnatcher. All rights reserved.
         Made with
         <i class="fa-solid fa-heart"></i>
       </p>

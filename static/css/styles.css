@@ -878,7 +878,7 @@ footer i.fa-heart {
     }
     
     .hero {
-        margin: 4rem auto 7rem;
+        margin: 4rem auto 4rem;
         padding-top: 2rem;
     }
     
@@ -897,7 +897,7 @@ footer i.fa-heart {
     }
     
     .features {
-        padding-top: 80px;
+        padding-bottom: 80px;
         gap: 2.5rem;
     }
     

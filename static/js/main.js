@@ -1981,6 +1981,39 @@ if (sessionIdMatch) {
 
 // Add event listeners when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
+
+  // const debugDiv = document.createElement('div');
+  // debugDiv.style.position = 'fixed';
+  // debugDiv.style.bottom = '10px';
+  // debugDiv.style.right = '10px';
+  // debugDiv.style.padding = '5px';
+  // debugDiv.style.background = '#f0f0f0';
+  // debugDiv.style.border = '1px solid #ccc';
+  // debugDiv.style.zIndex = 10000;
+  // debugDiv.textContent = 'Socket.IO: Connecting...';
+  // document.body.appendChild(debugDiv);
+
+  // Update on socket events
+  const socket = io({
+    path: '/socket.io/',
+    transports: ['polling', 'websocket']
+  });
+  
+  socket.on('connect', () => {
+    debugDiv.textContent = 'Socket.IO: Connected! SID: ' + socket.id;
+    debugDiv.style.background = '#d4ffd4';
+  });
+  
+  socket.on('disconnect', () => {
+    debugDiv.textContent = 'Socket.IO: Disconnected';
+    debugDiv.style.background = '#ffdddd';
+  });
+  
+  socket.on('connect_error', (error) => {
+    debugDiv.textContent = 'Socket.IO: Error - ' + error.message;
+    debugDiv.style.background = '#ffdddd';
+  });
+  
   // Start session button
   document
     .getElementById("startSessionBtn")

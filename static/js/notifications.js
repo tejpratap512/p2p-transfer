@@ -179,7 +179,7 @@ async function requestNotificationPermission() {
       addNotificationToggle();
 
       // Show a test notification
-      sendNotification("PeerSmash Notifications Enabled", {
+      sendNotification("StreamSnatcher Notifications Enabled", {
         body: "You will be notified when file transfers complete.",
       });
     } else if (permission === "denied") {
@@ -365,8 +365,8 @@ function notifyFileTransferComplete(filename, success = true) {
   if (!notificationsSupported || !notificationEnabled) return;
 
   const title = success
-    ? "PeerSmash: Transfer Complete"
-    : "PeerSmash: Transfer Failed";
+    ? "StreamSnatcher: Transfer Complete"
+    : "StreamSnatcher: Transfer Failed";
   const body = success
     ? `"${truncateFilename(filename)}" has been successfully transferred.`
     : `Transfer of "${truncateFilename(filename)}" failed.`;

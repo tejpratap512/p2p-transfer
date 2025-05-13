@@ -6,10 +6,15 @@ from fastapi.responses import HTMLResponse
 import socketio
 import os
 import uvicorn
+import logging
 
 from app.auth.router import auth_router
 from app.transfer.router import transfer_router
 from app.signaling.socket import sio
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Create the FastAPI app
 app = FastAPI(title="P2P Secure File Transfer")
@@ -17,7 +22,13 @@ app = FastAPI(title="P2P Secure File Transfer")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://streamsnatcher.com",
+        "https://www.streamsnatcher.com",
+        "http://streamsnatcher.com",
+        "http://www.streamsnatcher.com",
+        "*"  # Temporarily allow all origins for debugging
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -33,9 +44,15 @@ app.include_router(transfer_router, prefix="/api/transfer", tags=["File Transfer
 # Create templates
 templates = Jinja2Templates(directory="templates")
 
-# SocketIO setup - keep it properly mounted, don't replace the app
-socket_app = socketio.ASGIApp(sio)
-app.mount("/socket.io", socket_app)  # Mount at /socket.io path
+# SocketIO setup - FIXED CONFIGURATION
+print("Creating Socket.IO ASGI app")
+socket_app = socketio.ASGIApp(
+    sio, 
+    socketio_path=''  # Empty string makes the path just /socket.io/
+)
+print("Mounting Socket.IO at /socket.io/")
+app.mount("/socket.io/", socket_app)  # Note the trailing slash
+print("Socket.IO mounted successfully")
 
 @app.get("/")
 async def read_root(request: Request):
